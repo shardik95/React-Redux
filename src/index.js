@@ -1,45 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {connect,Provider} from 'react-redux';
 import {createStore} from 'redux';
-import {Provider, connect} from 'react-redux';
 
-const SomeComponent = ({SomeComponentProperty,dispatch})=>(
+const Counter = ({value =0,dispatch})=> (
     <div>
+        <span>{value}</span>
         <button onClick={()=>{
-            dispatch({type:'some action'})}}>
-            Click
-        </button>
-        <h1>{SomeComponentProperty}</h1>
+            dispatch({type:'plus'})
+        }}>+</button>
+        <button onClick={()=>{
+            dispatch({type:'minus'})
+        }}>-</button>
     </div>
 )
 
-function someStateToPropsMapper(state){
-    return {
-        SomeComponentProperty:state.someStateAttribute
-    }
-}
-
-const SomeContainer = connect(someStateToPropsMapper)(SomeComponent);
-
-const someReducer = (state = {
-    someDefaultProperty:'some state'},
-                     action)=>{
-    switch(action.type){
-        case 'some action':
-            alert("some action")
+const  CounterReducer =(state ={
+    value:0
+},action) => {
+    switch (action.type){
+        case 'plus':
             return {
-                someStateAttribute: 'some new State'
+                value:++state.value
             }
-        default:return state
+        case 'minus':
+            return {
+                value:--state.value
+            }
+        default: return state
     }
 }
 
-const store=createStore(someReducer);
+const stateToPropertyMapper = (state) =>(
+    {
+        value:state.value
+    }
+)
+
+const CounterApp = connect(stateToPropertyMapper)(Counter);
+
+const store=createStore(CounterReducer);
 
 ReactDOM.render(
     <Provider store={store}>
-        <SomeContainer/>
+        <CounterApp/>
     </Provider>,
     document.getElementById('root')
 )
