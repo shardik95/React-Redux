@@ -13,5 +13,5 @@ const DispatchToPropertiesMapper = dispatch => ({
     minus:()=> minus(dispatch)
 })
 
-export const CounterApp =connect(StateToPropertyMapper,
+export const CounterApp = connect(StateToPropertyMapper,
     DispatchToPropertiesMapper)(Counter)

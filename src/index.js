@@ -7,7 +7,6 @@ import {createStore} from 'redux';
 import {CounterReducer} from "./reducers";
 import {CounterApp} from "./containers/CounterApp";
 
-
 const store =createStore(CounterReducer);
 
 ReactDOM.render(
